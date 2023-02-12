@@ -122,7 +122,12 @@ export default function ChatBar() {
                 chatBarRef.current!.disabled = false;
                 chatBarRef.current!.focus();
               } catch (e) {
-                alert("There was an error sending this chat :(");
+                alert("There was an error from the bot responding to this message. Try asking it something else.");
+                chatMessagesRef.current!.scrollTop =
+                  chatMessagesRef.current!.scrollHeight;
+                chatBarRef.current!.value = "";
+                chatBarRef.current!.disabled = false;
+                chatBarRef.current!.focus();
               }
             }
           }}

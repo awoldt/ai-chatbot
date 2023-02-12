@@ -86,48 +86,54 @@ export default function ChatBar() {
           onKeyDown={async (e) => {
             //SEND CHAT
             if (e.key === "Enter" && currentClientMessage !== "") {
-              try {
-                chatBarRef.current!.disabled = true;
-                const newMessage: Message = {
-                  user: "client",
-                  text: currentClientMessage,
-                };
-                const data = await fetch("/api/new_message", {
-                  method: "POST",
-                  body: JSON.stringify(newMessage),
-                });
-
-                const returnData = await data.json();
-
-                setMessages([
-                  ...messages,
-                  {
+              if (currentClientMessage.split(" ").length === 1 || currentClientMessage.length < 5) {
+                alert("Your message must contain at least 2 words and be 5 or more characters in length");
+              } else {
+                try {
+                  chatBarRef.current!.disabled = true;
+                  const newMessage: Message = {
                     user: "client",
-                    text: returnData.data[0].text,
-                  },
-                  {
-                    user: "bot",
-                    text: returnData.data[1].text,
-                  },
-                ]);
+                    text: currentClientMessage,
+                  };
+                  const data = await fetch("/api/new_message", {
+                    method: "POST",
+                    body: JSON.stringify(newMessage),
+                  });
 
-                setCurrentClientMessage("");
-                if (!firstMessageSent) {
-                  chatBarRef.current!.placeholder = "";
-                  setFirstMessageSent(true);
+                  const returnData = await data.json();
+
+                  setMessages([
+                    ...messages,
+                    {
+                      user: "client",
+                      text: returnData.data[0].text,
+                    },
+                    {
+                      user: "bot",
+                      text: returnData.data[1].text,
+                    },
+                  ]);
+
+                  setCurrentClientMessage("");
+                  if (!firstMessageSent) {
+                    chatBarRef.current!.placeholder = "";
+                    setFirstMessageSent(true);
+                  }
+                  chatMessagesRef.current!.scrollTop =
+                    chatMessagesRef.current!.scrollHeight;
+                  chatBarRef.current!.value = "";
+                  chatBarRef.current!.disabled = false;
+                  chatBarRef.current!.focus();
+                } catch (e) {
+                  alert(
+                    "There was an error processing this message. Try asking it something else."
+                  );
+                  chatMessagesRef.current!.scrollTop =
+                    chatMessagesRef.current!.scrollHeight;
+                  chatBarRef.current!.value = "";
+                  chatBarRef.current!.disabled = false;
+                  chatBarRef.current!.focus();
                 }
-                chatMessagesRef.current!.scrollTop =
-                  chatMessagesRef.current!.scrollHeight;
-                chatBarRef.current!.value = "";
-                chatBarRef.current!.disabled = false;
-                chatBarRef.current!.focus();
-              } catch (e) {
-                alert("There was an error from the bot responding to this message. Try asking it something else.");
-                chatMessagesRef.current!.scrollTop =
-                  chatMessagesRef.current!.scrollHeight;
-                chatBarRef.current!.value = "";
-                chatBarRef.current!.disabled = false;
-                chatBarRef.current!.focus();
               }
             }
           }}

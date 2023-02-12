@@ -2,8 +2,21 @@ import Head from "next/head";
 import ChatBar from "@/components/ChatBar";
 import Description from "@/components/SiteDescription";
 import { Col, Container, Row } from "react-bootstrap";
+import { useEffect, useState } from "react";
 
 export default function Home() {
+  const [hideSiteDescription, setHideSiteDescription] =
+    useState<boolean>(false);
+  const [chatbarWidth, setChatbarWidth] = useState<number>();
+
+  useEffect(() => {
+    if (!hideSiteDescription) {
+      setChatbarWidth(9);
+    } else {
+      setChatbarWidth(12);
+    }
+  }, [hideSiteDescription]);
+
   return (
     <>
       <Head>
@@ -14,12 +27,14 @@ export default function Home() {
       </Head>
       <Container fluid>
         <Row>
-          <Col xl={9} style={{ padding: "0px" }}>
+          <Col xl={chatbarWidth} style={{ padding: "0px" }}>
             <ChatBar />
           </Col>
-          <Col xl={3} style={{ paddingTop: "25px" }}>
-            <Description />
-          </Col>
+          {!hideSiteDescription && (
+            <Col xl={3} style={{ paddingTop: "25px" }}>
+              <Description hide={setHideSiteDescription} />
+            </Col>
+          )}
         </Row>
       </Container>
     </>

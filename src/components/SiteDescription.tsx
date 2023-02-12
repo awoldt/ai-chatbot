@@ -1,7 +1,30 @@
 import React from "react";
-export default function RecentChats() {
+
+export default function RecentChats({
+  hide,
+}: {
+  hide: React.Dispatch<React.SetStateAction<boolean>>;
+}) {
   return (
     <>
+      <div
+        style={{
+          padding: "5px",
+          cursor: "pointer",
+          width: "fit-content",
+          float: "right",
+        }}
+        className="text-center text-muted mx-auto"
+        onClick={() => {
+          hide(true);
+        }}
+      >
+        <img
+          src="/icons/x.svg"
+          height={"25px"}
+          style={{ marginBottom: "3px" }}
+        />
+      </div>
       <h1 style={{ marginBottom: "25px" }} className="text-center">
         Chat AI
       </h1>
@@ -12,12 +35,14 @@ export default function RecentChats() {
         tasks, such as answering questions, providing recommendations, and
         offering personalized suggestions based on your preferences. The AI is
         always learning and improving, so you can expect more accurate and
-        helpful responses over time. Whether you&apos;re looking for quick assistance
-        or just want to have a friendly chat, this chat bot is here to help you
-        24/7. Start chatting today and experience the future of virtual
-        assistance.
+        helpful responses over time. Whether you&apos;re looking for quick
+        assistance or just want to have a friendly chat, this chat bot is here
+        to help you 24/7. Start chatting today and experience the future of
+        virtual assistance.
       </p>
-      <p className="mt-5 text-muted text-center"><img src="/icons/openai.svg"/> Powered by OpenAI</p>
+      <p className="mt-5 text-muted text-center">
+        <img src="/icons/openai.svg" /> Powered by OpenAI
+      </p>
     </>
   );
 }

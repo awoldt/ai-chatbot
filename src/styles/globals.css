@@ -1,8 +1,8 @@
 #user_message_input {
   padding: 15px;
   border-radius: 15px;
-  margin-top: 15px;
   height: 60px;
+  margin-top: -25px;
 }
 
 #mic_icon {

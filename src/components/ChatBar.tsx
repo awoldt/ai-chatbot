@@ -76,7 +76,7 @@ export default function ChatBar() {
       >
         <FormControl
           ref={chatBarRef}
-          placeholder="Ask any question or just have a normal converation"
+          placeholder="Type messsage here"
           id="user_message_input"
           onChange={(e) => {
             if (e.target.value !== "") {
@@ -86,8 +86,13 @@ export default function ChatBar() {
           onKeyDown={async (e) => {
             //SEND CHAT
             if (e.key === "Enter" && currentClientMessage !== "") {
-              if (currentClientMessage.split(" ").length === 1 || currentClientMessage.length < 5) {
-                alert("Your message must contain at least 2 words and be 5 or more characters in length");
+              if (
+                currentClientMessage.split(" ").length === 1 ||
+                currentClientMessage.length < 5
+              ) {
+                alert(
+                  "Your message must contain at least 2 words and be 5 or more characters in length"
+                );
               } else {
                 try {
                   chatBarRef.current!.disabled = true;

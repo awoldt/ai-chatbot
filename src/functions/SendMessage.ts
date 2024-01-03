@@ -10,25 +10,27 @@ export default async function SendMessage(
       text: message,
     };
     const newBotPrompt: OpenAIMessagePrompt = {
-      model: "text-davinci-003",
-      prompt: message,
-      max_tokens: 256,
+      model: "gpt-3.5-turbo-0613",
+      messages: [{ role: "user", content: message }],
     };
 
     //get back response from openai based on users message
-    const botResponse = await fetch("https://api.openai.com/v1/completions", {
-      method: "POST",
-      body: JSON.stringify(newBotPrompt),
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + process.env.OPENAI_KEY,
-      },
-    });
+    const botResponse = await fetch(
+      "https://api.openai.com/v1/chat/completions",
+      {
+        method: "POST",
+        body: JSON.stringify(newBotPrompt),
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + process.env.OPENAI_KEY,
+        },
+      }
+    );
     const b = await botResponse.json();
 
     const botResponseMessage: Message = {
       user: "bot",
-      text: b.choices[0].text,
+      text: b.choices[0].message.content,
     };
 
     return [newMessage, botResponseMessage];

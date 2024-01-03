@@ -1,5 +1,4 @@
 export default interface OpenAIMessagePrompt {
-  model: "text-davinci-003";
-  prompt: string;
-  max_tokens: number;
+  model: string;
+  messages: [{ role: string; content: string }];
 }

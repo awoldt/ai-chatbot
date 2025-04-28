@@ -9,28 +9,39 @@ export default async function SendMessage(
       user: "client",
       text: message,
     };
-    const newBotPrompt: OpenAIMessagePrompt = {
-      model: "gpt-3.5-turbo-0613",
-      messages: [{ role: "user", content: message }],
+
+    const newBotPrompt: {
+      model: string;
+      messages: [
+        {
+          role: string;
+          content: string;
+        }
+      ];
+    } = {
+      model: "gpt-4.1-nano",
+      messages: [
+        {
+          role: "user",
+          content: message,
+        },
+      ],
     };
 
     //get back response from openai based on users message
-    const botResponse = await fetch(
-      "https://api.openai.com/v1/chat/completions",
-      {
-        method: "POST",
-        body: JSON.stringify(newBotPrompt),
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + process.env.OPENAI_KEY,
-        },
-      }
-    );
-    const b = await botResponse.json();
+    const req = await fetch("https://api.openai.com/v1/chat/completions", {
+      method: "POST",
+      body: JSON.stringify(newBotPrompt),
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + process.env.OPENAI_KEY!,
+      },
+    });
+    const res = await req.json();
 
     const botResponseMessage: Message = {
       user: "bot",
-      text: b.choices[0].message.content,
+      text: res.choices[0].message.content,
     };
 
     return [newMessage, botResponseMessage];
